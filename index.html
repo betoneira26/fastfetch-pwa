@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport": content="width=device-width, initial-scale=1.0">
+  <title>Fastfetch Web — System Information PWA</title>
+  <meta name="description" content="Modern fastfetch / neofetch clone for the web as an installable PWA">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1e1e2e">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-catppuccin">
+  <div id="crt-overlay" class="crt-overlay hidden"></div>
+
+  <div class="app-container">
+    <!-- Header Toolbar -->
+    <header class="toolbar">
+      <div class="toolbar-left">
+        <span class="brand-badge">⚡ Fastfetch Web</span>
+        <span id="pwa-status" class="badge badge-info">PWA Ready</span>
+      </div>
+      <div class="toolbar-controls">
+        <div class="control-group">
+          <label for="logo-select">Logo:</label>
+          <select id="logo-select">
+            <option value="auto">Auto-Detect</option>
+            <option value="arch">Arch Linux</option>
+            <option value="ubuntu">Ubuntu</option>
+            <option value="debian">Debian</option>
+            <option value="fedora">Fedora</option>
+            <option value="nixos">NixOS</option>
+            <option value="alpine">Alpine</option>
+            <option value="void">Void</option>
+            <option value="gentoo">Gentoo</option>
+            <option value="apple">macOS</option>
+            <option value="windows">Windows 11</option>
+            <option value="android">Android</option>
+            <option value="chromeos">ChromeOS</option>
+            <option value="freebsd">FreeBSD</option>
+            <option value="tux">Tux (Linux)</option>
+            <option value="fastfetch">Fastfetch</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="theme-select">Theme:</label>
+          <select id="theme-select">
+            <option value="theme-catppuccin">Catppuccin Mocha</option>
+            <option value="theme-tokyonight">Tokyo Night</option>
+            <option value="theme-dracula">Dracula</option>
+            <option value="theme-gruvbox">Gruvbox Dark</option>
+            <option value="theme-nord">Nord</option>
+            <option value="theme-monokai">Monokai Pro</option>
+            <option value="theme-matrix">Matrix Green</option>
+            <option value="theme-cyberpunk">Cyberpunk</option>
+          </select>
+        </div>
+
+        <button id="btn-crt" class="btn btn-secondary" title="Toggle Retro CRT Scanline Effect">📺 CRT</button>
+        <button id="btn-copy" class="btn btn-secondary" title="Copy plain text">📋 Copy</button>
+        <button id="btn-export" class="btn btn-secondary" title="Export screenshot as PNG">📸 Export PNG</button>
+        <button id="btn-refresh" class="btn btn-primary" title="Refresh system info">🔄 Fetch</button>
+        <button id="btn-install" class="btn btn-accent hidden" title="Install as PWA">📥 Install</button>
+      </div>
+    </header>
+
+    <!-- Terminal Window -->
+    <main class="terminal-window">
+      <div class="terminal-titlebar">
+        <div class="window-dots">
+          <span class="dot dot-close"></span>
+          <span class="dot dot-min"></span>
+          <span class="dot dot-max"></span>
+        </div>
+        <div class="window-title" id="window-title">simon@webfetch: ~</div>
+        <div class="window-actions">
+          <span id="live-clock" class="live-clock">00:00:00</span>
+        </div>
+      </div>
+
+      <div class="terminal-body" id="terminal-scroll">
+        <!-- Output History Area -->
+        <div id="terminal-history"></div>
+
+        <!-- Interactive Fastfetch Display -->
+        <div class="fetch-container" id="fetch-display">
+          <!-- Left Column: ASCII Logo -->
+          <div class="fetch-logo-col">
+            <pre id="ascii-logo" class="ascii-logo"></pre>
+          </div>
+
+          <!-- Right Column: Specs List -->
+          <div class="fetch-info-col" id="fetch-info">
+            <div class="fetch-header">
+              <span id="fetch-user" class="fetch-user">simon</span><span class="fetch-at">@</span><span id="fetch-host" class="fetch-host">webfetch</span>
+            </div>
+            <div class="fetch-separator" id="fetch-separator">-----------------------</div>
+            <div class="fetch-entries" id="fetch-entries">
+              <!-- Populated dynamically -->
+            </div>
+            <!-- ANSI Color Palette Blocks -->
+            <div class="palette-container">
+              <div class="palette-row palette-standard">
+                <span class="color-box c-black"></span>
+                <span class="color-box c-red"></span>
+                <span class="color-box c-green"></span>
+                <span class="color-box c-yellow"></span>
+                <span class="color-box c-blue"></span>
+                <span class="color-box c-magenta"></span>
+                <span class="color-box c-cyan"></span>
+                <span class="color-box c-white"></span>
+              </div>
+              <div class="palette-row palette-bright">
+                <span class="color-box c-br-black"></span>
+                <span class="color-box c-br-red"></span>
+                <span class="color-box c-br-green"></span>
+                <span class="color-box c-br-yellow"></span>
+                <span class="color-box c-br-blue"></span>
+                <span class="color-box c-br-magenta"></span>
+                <span class="color-box c-br-cyan"></span>
+                <span class="color-box c-br-white"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal Interactive Command Line -->
+        <div class="cli-prompt-line">
+          <span class="cli-prompt" id="cli-prompt-label">simon@webfetch:~$ </span>
+          <input type="text" id="cli-input" class="cli-input" autofocus spellcheck="false" autocomplete="off" placeholder="Type 'help', 'theme nord', 'logo arch', or 'json'...">
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer Info Bar -->
+    <footer class="footer">
+      <span>Fastfetch Web PWA &bull; Fast, zero-dependency browser hardware inspection</span>
+      <span id="benchmark-tag">Render: <span id="render-time">--</span> ms</span>
+    </footer>
+  </div>
+
+  <canvas id="export-canvas" style="display: none;"></canvas>
+  <script src="app.js"></script>
+</body>
+</html>
