@@ -45,7 +45,7 @@ fastfetch-pwa/
 Serve the directory using any static HTTP server:
 
 ```bash
-cd /home/simon/projects/fastfetch-pwa
+cd fastfetch-pwa
 python3 -m http.server 8080
 ```
 

@@ -326,7 +326,7 @@
     const uptime = `${Math.floor(sessionUptimeSec / 60)}m ${sessionUptimeSec % 60}s`;
 
     return {
-      user: 'user',
+      user: 'Betoneira',
       host: window.location.hostname || 'localhost',
       os,
       defaultLogo,
